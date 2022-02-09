@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:self_check/ui/login.dart';
 
 import 'package:self_check/ui/ui_first.dart';
 import 'package:self_check/ui/ui_second.dart';
@@ -16,11 +17,12 @@ class MyApp extends StatelessWidget {
       title: 'Self-Check',
       theme: ThemeData( primarySwatch: Colors.blue ),
       // home: MyHomePage(),
-      initialRoute: 'a',
+      initialRoute: 'd',
       routes: {
         'a' : (context) => MyHomePage(),
         'b' : (context) => Ui_first(),
-        'b' : (context) => Ui_second(),
+        'c' : (context) => Ui_second(),
+        'd' : (context) => Login()
       },
     );
   }
@@ -30,10 +32,10 @@ class MyHomePage extends StatefulWidget {
   const MyHomePage({Key? key}) : super(key: key);
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  State<MyHomePage> createState() => MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
