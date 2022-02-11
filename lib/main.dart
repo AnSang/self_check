@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:kakao_flutter_sdk/all.dart';
 import 'package:self_check/ui/login.dart';
 
 import 'package:self_check/ui/ui_first.dart';
-import 'package:self_check/ui/ui_second.dart';
 
-void main() => runApp(const MyApp());
+void main() {
+  KakaoContext.clientId = '791630015f9f2b0c5852135052434fee';
+  runApp(MyApp());
+}
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -17,12 +19,11 @@ class MyApp extends StatelessWidget {
       title: 'Self-Check',
       theme: ThemeData( primarySwatch: Colors.blue ),
       // home: MyHomePage(),
-      initialRoute: 'd',
+      initialRoute: 'c',
       routes: {
         'a' : (context) => MyHomePage(),
         'b' : (context) => Ui_first(),
-        'c' : (context) => Ui_second(),
-        'd' : (context) => Login()
+        'c' : (context) => Login()
       },
     );
   }
@@ -36,7 +37,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class MyHomePageState extends State<MyHomePage> {
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
