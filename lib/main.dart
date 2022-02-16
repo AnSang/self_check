@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:kakao_flutter_sdk/all.dart';
-import 'package:self_check/ui/login.dart';
+import 'package:self_check/ui/login_screen.dart';
 
-import 'package:self_check/ui/ui_first.dart';
+import 'package:firebase_core/firebase_core.dart';
 
-void main() {
-  KakaoContext.clientId = '791630015f9f2b0c5852135052434fee';
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+
+  // KakaoContext.clientId = '791630015f9f2b0c5852135052434fee';
   runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -18,13 +21,13 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Self-Check',
       theme: ThemeData( primarySwatch: Colors.blue ),
-      // home: MyHomePage(),
-      initialRoute: 'c',
+      home: LoginSignupScreen(),
+      /*initialRoute: 'c',
       routes: {
         'a' : (context) => MyHomePage(),
         'b' : (context) => Ui_first(),
-        'c' : (context) => Login()
-      },
+        'c' : (context) => LoginSignupScreen()
+      },*/
     );
   }
 }
