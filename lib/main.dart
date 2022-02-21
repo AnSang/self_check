@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:self_check/ui/login_screen.dart';
+import 'package:get/get.dart';
+import 'package:self_check/ui/main_buttons.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:firebase_core/firebase_core.dart';
 
@@ -8,6 +10,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
 
+  final SharedPreferences pref = await SharedPreferences.getInstance();
   // KakaoContext.clientId = '791630015f9f2b0c5852135052434fee';
   runApp(MyApp());
 }
@@ -17,11 +20,11 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Self-Check',
       theme: ThemeData( primarySwatch: Colors.blue ),
-      home: LoginSignupScreen(),
+      home: MainButtons(),
       /*initialRoute: 'c',
       routes: {
         'a' : (context) => MyHomePage(),
