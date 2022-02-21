@@ -1,9 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:kakao_flutter_sdk/all.dart';
-import 'package:self_check/main.dart';
 import 'package:self_check/utils/color_util.dart';
-import 'package:self_check/utils/textStyle.dart';
-import 'package:http/http.dart' as http;
 
 class Login extends StatefulWidget {
   const Login({Key? key}) : super(key: key);
@@ -13,9 +9,6 @@ class Login extends StatefulWidget {
 }
 
 class LoginState extends State<Login> {
-  // TextEditingController id_contr = TextEditingController();
-  // TextEditingController pw_contr = TextEditingController();
-
   bool isLoginScreen = true;
 
   @override
@@ -275,97 +268,3 @@ class LoginState extends State<Login> {
     ),
   );
 }
-
-/*class LoginState extends State<Login> {
-  TextEditingController id_contr = TextEditingController();
-  TextEditingController pw_contr = TextEditingController();
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('로그인'),
-        backgroundColor: Colors.blue,
-        centerTitle: true
-      ),
-
-      body: GestureDetector(
-        onTap: () { FocusScope.of(context).unfocus(); },  // 바깥쪽 화면 터치시 Focus 해제 -> Keyboard 사라짐
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              Padding(padding: EdgeInsets.only(top: 50)),
-              Center(
-                child: Image(
-                  image: AssetImage('assets/flower.png'),
-                  width: 170.0,
-                  height: 190.0,
-                ),
-              ),
-              Form(
-                  child: Theme(
-                    data: ThemeData(
-                      primaryColor: Colors.teal,
-                      inputDecorationTheme: InputDecorationTheme(
-                        labelStyle: TextStyle_Util.s_20_blue
-                      )
-                    ),
-                    child: Container(
-                      padding: EdgeInsets.all(40.0),
-                      child: Column(
-                        children: [
-                          TextField(
-                            controller: id_contr,
-                            decoration: InputDecoration( labelText: 'Enter dice'),
-                            keyboardType: TextInputType.emailAddress,
-                          ),
-                          TextField(
-                            controller: pw_contr,
-                            decoration: InputDecoration( labelText: 'Enter dice'),
-                            keyboardType: TextInputType.emailAddress,
-                            obscureText: true,
-                          ),
-                          SizedBox(height: 40),
-                          ButtonTheme(
-                            minWidth: 100,
-                            height: 50,
-                            child: RaisedButton(
-                              color: Colors.orangeAccent,
-                              onPressed: () { login_kakao(); },
-                              child: Icon(
-                                  Icons.arrow_forward,
-                                color: Colors.white,
-                                size: 35,
-                              ),
-                            )
-                          )
-                        ],
-                      ),
-                    ),
-                  )
-              )
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  void login(BuildContext context) {
-    // 웹서비스에서 로그인 정보 확인후 결과 값으로 표출
-    if(id_contr.text != 'aaa' && pw_contr.text != 'bbb') {
-    } else if (id_contr.text != 'aaa') {
-      flutterToast('아이디가 맞지 않습니다.');
-    } else if (pw_contr.text != 'bbb') {
-      flutterToast('비밀번호가 맞지 않습니다.');
-    } else {
-      Navigator.push(context, MaterialPageRoute(builder: (BuildContext context)=> MyHomePage()));
-      flutterToast('정상적으로 로그인 되었습니다.');
-    }
-  }
-  
-  Future<void> login_kakao() async {
-    String authCode = await AuthCodeClient.instance.request();
-    print(authCode);
-  }
-}*/
