@@ -6,7 +6,7 @@ import 'package:self_check/ui/second_wake.dart';
 import 'package:get/get.dart';
 
 final ScreenController controller = Get.put(ScreenController());
-late final BuildContext _context;
+BuildContext? _context;
 final List<Widget> screens = setScreens();
 
 class ScreenController extends GetxController {
@@ -18,32 +18,46 @@ class ScreenController extends GetxController {
   }
 }
 
-class MainButtons extends StatefulWidget {
+/*class MainButtons extends StatefulWidget {
   const MainButtons({Key? key}) : super(key: key);
 
   @override
   State<MainButtons> createState() => MainButtonsState();
-}
+}*/
 
-class MainButtonsState extends State<MainButtons> {
+class MainButtons extends StatelessWidget {
+  const MainButtons({Key? key}) : super(key: key);
+
 
   @override
   Widget build(BuildContext context) {
     _context = context;
     setScreens();
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Self-Check'),
-        centerTitle: true,
-        elevation: 0.0,
-      ),
+      return GetBuilder<ScreenController>(
+          init: ScreenController(),
+          builder: (controller) {
+            return Scaffold(
+              appBar: AppBar(
+                title: const Text('안상'),
+              ),
+              body: screens[controller.showScreenIndex],
+            );
+          });
 
-      drawer: setDrawer(),
-
-      body: screens[controller.showScreenIndex],
-    );
   }
 }
+
+/*return Scaffold(
+appBar: AppBar(
+title: Text('Self-Check'),
+centerTitle: true,
+elevation: 0.0,
+),
+
+drawer: setDrawer(),
+
+body: screens[controller.showScreenIndex],
+);*/
 
 Drawer setDrawer() {
   return Drawer(
@@ -134,7 +148,7 @@ Widget setButton(String btnName) {
       color: Colors.blue,
       elevation: 5,
       shape: RoundedRectangleBorder( borderRadius: BorderRadius.all(Radius.circular(10)) ),
-      minWidth: (MediaQuery.of(_context).size.width - 40) / 2,
+      minWidth: (MediaQuery.of(_context!).size.width - 40) / 2,
       height: 100,
       child: Text(
         btnName,
@@ -166,7 +180,7 @@ void flutterToast(String text) {
 
 List<Widget> setScreens() {
   List<Widget> list = [];
-  list.add(setCenter(_context));
+  list.add(setCenter(_context!));
   list.add(First_weight());
   list.add(Second_wake());
   return list;
