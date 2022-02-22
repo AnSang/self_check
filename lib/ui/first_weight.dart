@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -7,6 +9,11 @@ final controller = Get.put(WeightController());
 class WeightController extends GetxController {
   var isInput = false;
   final textController = TextEditingController();
+
+  @override
+  void onInit() {
+    textController.text = '0.0';
+  }
 
   @override
   void onClose() {
@@ -77,7 +84,7 @@ class First_weight extends StatelessWidget {
               // 입력 or 기록 화면
               if (controller.isInput)
                 Container(
-                  padding: EdgeInsets.only(top: (MediaQuery.of(context).size.height / 5)),
+                  padding: EdgeInsets.only(top: (MediaQuery.of(context).size.height / 7)),
                   child: Column(
                     children: [
                       Row(
@@ -86,8 +93,10 @@ class First_weight extends StatelessWidget {
                           SizedBox(
                               width: 170,
                               child: TextFormField(
+                                style: TextStyle(
+                                  package: controller.textController.text
+                                ),
                                 controller: controller.textController,
-                                validator: (value) { controller.validator(value!); },
                                 keyboardType: TextInputType.number,
                                 decoration: InputDecoration(
                                     contentPadding: EdgeInsets.fromLTRB(20, 0, 20, 0),
@@ -102,6 +111,7 @@ class First_weight extends StatelessWidget {
                                         borderSide: BorderSide(color: Colors.blue)
                                     )
                                 ),
+                                onChanged: (value) { controller.validator(value); },
                               )
                           ),
                           SizedBox(width: 10),
@@ -126,7 +136,10 @@ class First_weight extends StatelessWidget {
                                   fontSize: 14,
                                 ),
                               ),
-                              onPressed: (){}
+                              onPressed: (){
+                                double val = double.parse(controller.textController.text) + 0.1;
+                                controller.textController.text = val.toStringAsFixed(1);
+                              }
                           ),
                           MaterialButton(
                               minWidth: 3,
@@ -138,7 +151,12 @@ class First_weight extends StatelessWidget {
                                   fontSize: 14,
                                 ),
                               ),
-                              onPressed: (){}
+                              onPressed: (){
+                                double val = double.parse(controller.textController.text);
+                                if (val > 0) {
+                                  controller.textController.text = (val - 0.1).toStringAsFixed(1);
+                                }
+                              }
                           ),
                           SizedBox(width: 50),
                           MaterialButton(
