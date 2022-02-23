@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:self_check/controller/weight_controller.dart';
 
 final controller = Get.put(WeightController());
 
-class First_weight extends StatelessWidget {
-  const First_weight({Key? key}) : super(key: key);
+class FirstWeight extends StatelessWidget {
+  const FirstWeight({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
