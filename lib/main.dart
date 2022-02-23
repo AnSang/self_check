@@ -8,7 +8,15 @@ import 'package:firebase_core/firebase_core.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+  await Firebase.initializeApp(
+    options: const FirebaseOptions(
+        apiKey: 'AIzaSyD-Dpy17_SACuLjQFyMrU8HHC5yT4qaZak',
+        appId: 'com.example.self_check_web',  // com.example.self_check <- 로 지정하면 Android App Name과 같아서 에러 나타남
+        projectId: 'self-check-952f6',
+        messagingSenderId: 'Sender_Ansang'
+    )
+        //Todo : messagingSenderId 의 기능 파악하기
+  );
 
   final SharedPreferences pref = await SharedPreferences.getInstance();
   // KakaoContext.clientId = '791630015f9f2b0c5852135052434fee';
