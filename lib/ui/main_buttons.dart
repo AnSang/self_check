@@ -1,6 +1,6 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:self_check/controller/sreen_controller.dart';
 import 'package:self_check/ui/bottom_userinfo.dart';
 import 'package:self_check/ui/bottom_week.dart';
 import 'package:self_check/ui/first_weight.dart';
@@ -10,29 +10,8 @@ import 'package:get/get.dart';
 
 BuildContext? _context;
 final ScreenController controller = Get.put(ScreenController());
-final List<Widget> button_screens = setScreens();
-final List<Widget> bottom_screens = setBottom();
-
-class ScreenController extends GetxController {
-  var isButtonView = true;
-  var showScreenIndex = 0;
-  var showBottomIndex = 0;
-
-  void setScreen(int index) {
-    showScreenIndex = index;
-    update();
-  }
-
-  void setBottom(int index) {
-    showBottomIndex = index;
-    update();
-  }
-
-  void setButtonView(bool value) {
-    isButtonView = value;
-    update();
-  }
-}
+final List<Widget> buttonScreens = setScreens();
+final List<Widget> bottomScreens = setBottom();
 
 class MainButtons extends StatelessWidget {
   const MainButtons({Key? key}) : super(key: key);
@@ -74,7 +53,7 @@ class MainButtons extends StatelessWidget {
                 ],
               ),
               body: controller.isButtonView ? // true : false
-                button_screens[controller.showScreenIndex] : bottom_screens[controller.showBottomIndex]
+                buttonScreens[controller.showScreenIndex] : bottomScreens[controller.showBottomIndex]
             );
           });
 
@@ -148,8 +127,8 @@ void flutterToast(String text) {
 List<Widget> setScreens() {
   List<Widget> list = [];
   list.add(setCenter(_context!));
-  list.add(First_weight());
-  list.add(Second_wake());
+  list.add(FirstWeight());
+  list.add(SecondWake());
   return list;
 }
 
