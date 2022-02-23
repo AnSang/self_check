@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:self_check/controller/weight_controller.dart';
 
 final controller = Get.put(WeightController());
@@ -129,7 +130,22 @@ class FirstWeight extends StatelessWidget {
                               }
                           ),
                           SizedBox(width: 50),
-                          MaterialButton(
+                          GestureDetector(
+                              onTap: () {
+                                controller.addItemData(
+                                    DateFormat('yyyy.MM.dd').format(DateTime.now()),
+                                    double.parse(controller.textController.text)
+                                );
+                              },
+                            child: Text(
+                              '저장',
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 14,
+                              ),
+                            )
+                          ),
+                          /*MaterialButton(
                               minWidth: 3,
                               color: Colors.blue,
                               child: Text(
@@ -139,8 +155,13 @@ class FirstWeight extends StatelessWidget {
                                   fontSize: 14,
                                 ),
                               ),
-                              onPressed: (){}
-                          )
+                              onPressed: () {
+                                controller.addItemData(
+                                    DateFormat('yyyy.MM.dd').format(DateTime.now()),
+                                    double.parse(controller.textController.text)
+                                );
+                              },
+                          )*/
                         ],
                       )
                     ],
