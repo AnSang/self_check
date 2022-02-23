@@ -1,38 +1,9 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:self_check/controller/weight_controller.dart';
 
 final controller = Get.put(WeightController());
-
-class WeightController extends GetxController {
-  var isInput = false;
-  final textController = TextEditingController();
-
-  @override
-  void onInit() {
-    textController.text = '0.0';
-  }
-
-  @override
-  void onClose() {
-    textController.dispose();
-    super.dispose();
-  }
-
-  void setInput(bool value) {
-    isInput = value;
-    update();
-  }
-
-  String validator(String value) {
-    if (value.isEmpty) {
-      return 'Please this field must be filled';
-    }
-    return '';
-  }
-}
 
 class First_weight extends StatelessWidget {
   const First_weight({Key? key}) : super(key: key);
@@ -176,12 +147,20 @@ class First_weight extends StatelessWidget {
                     ],
                   ),
                 )
-              else
-                Container(
-                  color: Colors.blue,
-                  height: 300,
-                  width: 300,
-                )
+              /*else
+                ListView.builder(
+                  scrollDirection: Axis.vertical,
+                  itemCount: 4,
+                  itemBuilder: (BuildContext context, int index) {
+                    return Container(
+                      height: 500,
+                      width: MediaQuery.of(context).size.width - 40,
+                      color: Colors.blueAccent,
+                      alignment: Alignment.center,
+                      child: Text('item : $index'),
+                    );
+                  },
+                )*/
             ],
           ),
         );
