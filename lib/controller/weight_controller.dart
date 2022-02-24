@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:self_check/models/weight.dart';
@@ -10,8 +11,10 @@ class WeightController extends GetxController {
 
   late SharedPreferences pref;
   List<Weight>? items;
+  List<Weight>? monthItems;
 
   var isInput = false;
+  var yearMonth = DateTime.now(); //
   final textController = TextEditingController();
 
   @override
@@ -19,6 +22,7 @@ class WeightController extends GetxController {
     textController.text = '0.0';
     pref = await SharedPreferences.getInstance();
     items = initItems();
+    monthItems = getMonthItem();
     super.onInit();
   }
 
@@ -33,6 +37,20 @@ class WeightController extends GetxController {
     update();
   }
 
+  void plusMonth() {
+    yearMonth = DateTime(yearMonth.year, yearMonth.month + 1);
+    update();
+  }
+
+  void minMonth() {
+    yearMonth = DateTime(yearMonth.year, yearMonth.month - 1);
+    update();
+  }
+
+  String getMonth() {
+    return DateFormat('yyyy.MM').format(yearMonth);
+  }
+
   String validator(String value) {
     if (value.isEmpty) {
       return 'Please this field must be filled';
@@ -40,17 +58,25 @@ class WeightController extends GetxController {
     return '';
   }
 
+  List<Weight> getMonthItem() {
+    List<Weight> list = [];
+    for (Weight row in items!) {
+      if (row.date.contains(getMonth())) {
+        list.add(row);
+      }
+    }
+    return list;
+  }
 
   // preferences
 
-
   List<Weight> initItems() {
-    String? _list = pref.getString(key);
-    if (_list == null) {
+    String? list = pref.getString(key);
+    if (list == null) {
       return <Weight>[];  // 없으면 빈 list 반환
     } else {
-      List list = jsonDecode(_list!);
-      return list.cast<Weight>();
+      List list_ = jsonDecode(list);
+      return list_.cast<Weight>();
     }
   }
 
@@ -68,5 +94,6 @@ class WeightController extends GetxController {
 
     items!.clear();
     items = initItems();
+    monthItems = getMonthItem();
   }
 }
