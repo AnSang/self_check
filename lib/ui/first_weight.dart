@@ -208,17 +208,17 @@ class FirstWeight extends StatelessWidget {
 LineChart setChart() {
   return LineChart( // Chart
       LineChartData(
-          minX: 0,
+          minX: 1,
           maxX: 31,
-          minY: 0,
-          maxY: 5,
+          minY: 50,
+          maxY: 80,
           gridData: FlGridData(
             show: true,
             drawVerticalLine: false,
             getDrawingHorizontalLine: (value) {
               return FlLine(
                   color: Colors.black,
-                  strokeWidth: 1
+                  strokeWidth: 1,
               );
             },
           ),
@@ -226,12 +226,14 @@ LineChart setChart() {
               show: true,
               bottomTitles: SideTitles(   // 하단 타이틀 설정
                   showTitles: true,
-                  reservedSize: 31,       //??
                   textStyle: titleStyle(),
                   getTitles: (value) {    //
-                    return '';
-                  },
-                  margin: 1
+                    if (value % 5 == 0) {
+                      return value.toString();
+                    } else {
+                      return '';
+                    }
+                  }
               ),
 
               leftTitles: SideTitles( // 왼쪽 타이틀 설정
@@ -250,8 +252,6 @@ LineChart setChart() {
                   }
                   return '';
                 },
-                reservedSize: 100,
-                margin: 1,
               )
           ),
 
@@ -262,24 +262,15 @@ LineChart setChart() {
 
           lineBarsData: [ // 입력될 데이터
             LineChartBarData(
-              spots: [ // 한사이클 7개
-                FlSpot(0, 3),
-                FlSpot(2.6, 2),
-                FlSpot(4.9, 5),
-                FlSpot(6.8, 3.1),
-                FlSpot(8, 4),
-                FlSpot(9.5, 3),
-                FlSpot(11, 4),
-              ],
+              spots: controller.getSpots(), // 한사이클 7개,
               isCurved: true,
               colors: gradientColors,
-              barWidth: 5,
+              barWidth: 3,
               isStrokeCapRound: true,
               dotData: FlDotData( show: true ),
               belowBarData: BarAreaData(
                 show: true,
-                colors:
-                gradientColors.map((color) => color.withOpacity(0.3)).toList(),
+                colors: gradientColors.map((color) => color.withOpacity(0.3)).toList(),
               ),
             )
           ]
