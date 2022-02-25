@@ -1,8 +1,8 @@
-import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:self_check/models/chart_spot.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:self_check/models/weight.dart';
@@ -11,19 +11,21 @@ class WeightController extends GetxController {
   static const key = 'weigth';
 
   late SharedPreferences pref;
-  List<Weight>? items;
-  List<Weight>? monthItems;
+  late List<Weight> items;
+  late List<Weight> monthItems;
+  late List<Spot> spots;
 
-  var isInput = false;
+  var isInput = true;
   var yearMonth = DateTime.now(); //
   final textController = TextEditingController();
 
   @override
   void onInit() async {
-    textController.text = '0.0';
     pref = await SharedPreferences.getInstance();
+    textController.text = '0.0';
     items = initItems();
     monthItems = getMonthItem();
+    spots = getSpots();
     super.onInit();
    }
 
@@ -40,11 +42,19 @@ class WeightController extends GetxController {
 
   void plusMonth() {
     yearMonth = DateTime(yearMonth.year, yearMonth.month + 1);
+    monthItems.clear();
+    spots.clear();
+    monthItems = getMonthItem();
+    spots = getSpots();
     update();
   }
 
   void minMonth() {
     yearMonth = DateTime(yearMonth.year, yearMonth.month - 1);
+    monthItems.clear();
+    spots.clear();
+    monthItems = getMonthItem();
+    spots = getSpots();
     update();
   }
 
@@ -61,7 +71,7 @@ class WeightController extends GetxController {
 
   List<Weight> getMonthItem() {
     List<Weight> list = [];
-    for (Weight row in items!) {
+    for (Weight row in items) {
       if (row.date.contains(getMonth())) {
         list.add(row);
       }
@@ -69,18 +79,24 @@ class WeightController extends GetxController {
     return list;
   }
 
-  List<FlSpot> getSpots() {
-    List<FlSpot> list = [];
+  List<Spot> getSpots() {
+    List<Spot> list = [];
     if (items == null) {
       for (Weight row in getInstanceList()) {
         double date = int.parse(row.date.substring(8,10)).toDouble();
-        list.add(FlSpot(date, row.weight));
+        list.add(Spot(date, row.weight));
       }
     } else {
-      for (Weight row in items!) {
-        double date = int.parse(row.date.substring(8,10)).toDouble();
-        list.add(FlSpot(date, row.weight));
+      for (Weight row in items) {
+        if (row.date.contains(getMonth())) {
+          double date = int.parse(row.date.substring(8, 10)).toDouble();
+          list.add(Spot(date, row.weight));
+        }
       }
+    }
+
+    if (list.isEmpty) {
+      list.add(Spot(1, 50));
     }
     return list;
   }
@@ -99,18 +115,18 @@ class WeightController extends GetxController {
   }
 
   Weight getItem(int index) {
-    return items![index];
+    return items[index];
   }
 
   void addItemRow(Weight item) {
-    items!.add(item);
+    items.add(item);
   }
 
   void addItemData(String date, double weight) {
-    items!.add(Weight(date: date, weight: weight));
-    pref.setString(key, jsonEncode(items!));
+    items.add(Weight(date: date, weight: weight));
+    pref.setString(key, jsonEncode(items));
 
-    items!.clear();
+    items.clear();
     items = initItems();
     monthItems = getMonthItem();
   }
@@ -127,6 +143,18 @@ class WeightController extends GetxController {
     list.add(Weight(date: '2022.02.09', weight: 58));
     list.add(Weight(date: '2022.02.13', weight: 72));
     list.add(Weight(date: '2022.02.16', weight: 66));
+
+    list.add(Weight(date: '2022.03.02', weight: 22));
+    list.add(Weight(date: '2022.03.07', weight: 44));
+    list.add(Weight(date: '2022.03.09', weight: 33));
+    list.add(Weight(date: '2022.03.13', weight: 12));
+    list.add(Weight(date: '2022.03.16', weight: 78));
+
+    list.add(Weight(date: '2022.04.02', weight: 43));
+    list.add(Weight(date: '2022.04.07', weight: 15));
+    list.add(Weight(date: '2022.04.09', weight: 67));
+    list.add(Weight(date: '2022.04.13', weight: 33));
+    list.add(Weight(date: '2022.04.16', weight: 22));
     return list;
   }
 }

@@ -1,13 +1,15 @@
-import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:self_check/controller/weight_controller.dart';
+import 'package:syncfusion_flutter_charts/charts.dart';
+
+import '../models/weight.dart';
 
 final controller = Get.put(WeightController());
 const List<Color> gradientColors = [
   Color(0xff23b6e6),
-  // Color(0xff02d39a),
+  Color(0xff02d39a),
 ];
 
 class FirstWeight extends StatelessWidget {
@@ -162,40 +164,40 @@ class FirstWeight extends StatelessWidget {
                   )
                 else
                   Center(
-                    child: Column(
-                      children: [
-                        SizedBox(height: 10),
-                        Container(
-                          padding: EdgeInsets.symmetric( vertical: 3, horizontal: 15 ),
-                          decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(15),
-                              boxShadow: [
-                                BoxShadow(
-                                    color: Colors.black.withOpacity(0.1),
-                                    blurRadius: 15,
-                                    spreadRadius: 2
-                                )
-                              ]
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              IconButton(onPressed: () { controller.minMonth(); },
-                                  icon: Icon(Icons.keyboard_arrow_left)),
-                              SizedBox(width: 10),
-                              Text( controller.getMonth() ),
-                              SizedBox(width: 10),
-                              IconButton(onPressed: () { controller.plusMonth(); },
-                                  icon: Icon(Icons.keyboard_arrow_right))
-                            ],
-                          ),
+                        child: Column(
+                          children: [
+                            SizedBox(height: 10),
+                            Container(
+                              padding: EdgeInsets.symmetric( vertical: 3, horizontal: 15 ),
+                              decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(15),
+                                  boxShadow: [
+                                    BoxShadow(
+                                        color: Colors.black.withOpacity(0.1),
+                                        blurRadius: 15,
+                                        spreadRadius: 2
+                                    )
+                                  ]
+                              ),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  IconButton(onPressed: () { controller.minMonth(); },
+                                      icon: Icon(Icons.keyboard_arrow_left)),
+                                  SizedBox(width: 10),
+                                  Text( controller.getMonth() ),
+                                  SizedBox(width: 10),
+                                  IconButton(onPressed: () { controller.plusMonth(); },
+                                      icon: Icon(Icons.keyboard_arrow_right))
+                                ],
+                              ),
+                            ),
+                            SizedBox(height: 10),
+                            setChart2()
+                          ],
                         ),
-                        SizedBox(height: 10),
-                        setChart()
-                      ],
-                    ),
                   )
               ],
             ),
@@ -205,89 +207,23 @@ class FirstWeight extends StatelessWidget {
   }
 }
 
-LineChart setChart() {
-  return LineChart( // Chart
-      LineChartData(
-          minX: 1,
-          maxX: 31,
-          minY: 50,
-          maxY: 80,
-          gridData: FlGridData(
-            show: true,
-            drawVerticalLine: false,
-            getDrawingHorizontalLine: (value) {
-              return FlLine(
-                  color: Colors.black,
-                  strokeWidth: 1,
-              );
-            },
-          ),
-          titlesData: FlTitlesData(       // 타이틀들 설정
-              show: true,
-              bottomTitles: SideTitles(   // 하단 타이틀 설정
-                  showTitles: true,
-                  textStyle: titleStyle(),
-                  getTitles: (value) {    //
-                    if (value % 5 == 0) {
-                      return value.toString();
-                    } else {
-                      return '';
-                    }
-                  }
-              ),
-
-              leftTitles: SideTitles( // 왼쪽 타이틀 설정
-                showTitles: true,
-                textStyle: titleStyle(),
-                getTitles: (value) {
-                  switch (value.toInt()) {
-                    case 1:
-                      return '20Kg';
-                    case 2:
-                      return '40Kg';
-                    case 3:
-                      return '60Kg';
-                    case 4:
-                      return '80Kg';
-                  }
-                  return '';
-                },
-              )
-          ),
-
-          borderData: FlBorderData( // 테두리 지정
-            show: true,
-            border: Border.all(color: Colors.black, width: 1),
-          ),
-
-          lineBarsData: [ // 입력될 데이터
-            LineChartBarData(
-              spots: controller.getSpots(), // 한사이클 7개,
-              isCurved: true,
-              colors: gradientColors,
-              barWidth: 3,
-              isStrokeCapRound: true,
-              dotData: FlDotData( show: true ),
-              belowBarData: BarAreaData(
-                show: true,
-                colors: gradientColors.map((color) => color.withOpacity(0.3)).toList(),
-              ),
-            )
-          ]
-      )
+Widget setChart2() {
+  return SfCartesianChart(
+    primaryXAxis: CategoryAxis(),
+    legend: Legend(isVisible: false),                   // 우측에 선에 대한 설명 표시
+      palette: gradientColors,
+    tooltipBehavior: TooltipBehavior(
+        enable: true,
+      format: 'point.x 일 : point.y Kg'
+    ),
+    series: <ChartSeries<Weight, String>>[
+      LineSeries<Weight, String>(
+          dataSource: controller.monthItems,
+          xValueMapper: (Weight row, _) => row.date.substring(8,10),
+          yValueMapper: (Weight row, _) => row.weight,
+          name: 'Weight',
+          // Enable data label
+          dataLabelSettings: DataLabelSettings(isVisible: true))
+    ]
   );
 }
-
-TextStyle titleStyle() {    // Chart Title TextStyle
-  return const TextStyle(
-      color: Colors.blueAccent,
-      fontWeight: FontWeight.bold,
-      fontSize: 15
-  );
-}
-
-/*
-void getMonthData() {
-
-  controller.items
-}*/
