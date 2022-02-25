@@ -37,6 +37,7 @@ dependencies:
 
   get: ^4.6.1
   http: ^0.13.4
+  analog_clock: ^0.1.0
   fluttertoast: ^8.0.8
   kakao_flutter_sdk: ^0.9.0
   shared_preferences: ^2.0.13
